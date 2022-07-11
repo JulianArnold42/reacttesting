@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {MutableRefObject, useRef} from 'react';
+import {GlobalStyles, Grid, useTheme} from '@mui/material';
+import {Buttons} from "./pages/Buttons";
+import {List} from "./pages/List";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function printMe(listItemRefs: MutableRefObject<(HTMLDivElement | undefined)[]>): void {
+    console.log(listItemRefs);
 }
 
-export default App;
+export function App() {
+    const theme = useTheme();
+
+    const listItemRefs = useRef<HTMLDivElement[]>([]);
+
+    const items = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+    return (
+        <>
+            <GlobalStyles styles={() => ({
+                "& #root": {height: "100%", margin: 0},
+                html: {height: "100%", margin: 0},
+                body: {height: "100%", margin: 0}
+            })}/>
+            <Grid container bgcolor={theme.palette.divider} height={"100%"}>
+                <Grid item xs={8}>
+                    <Buttons items={items} listItemRefs={listItemRefs}/>
+                </Grid>
+                <Grid item xs={4} height={"100%"} overflow={"auto"}>
+                    <List items={items} listItemRefs={listItemRefs}/>
+                </Grid>
+            </Grid>
+        </>
+    );
+}
